@@ -1,0 +1,77 @@
+pcm.ladcomp {
+      type plug
+      slave.pcm "ladcomp_compressor";
+}
+
+pcm.local_eq_ {
+	type plug
+	slave.pcm "local_eq";
+}
+pcm.dx_eq_ {
+	type plug
+	slave.pcm "dx_eq";
+}
+  
+pcm.ladcomp_compressor {
+      type ladspa
+      slave.pcm "plughw:3,0";
+      path "/usr/lib/ladspa";
+      plugins [
+          {
+              label tap_dynamics_m
+              input {
+                        #attack, release, offset gain, makeup gain, function
+                        #http://tap-plugins.sourceforge.net/ladspa/dynamics.html
+                        controls [5 10 10 10 10]
+              }
+          }
+      ]
+  }
+
+pcm.local_eq {
+      type ladspa
+      slave.pcm "plughw:3,0";
+      path "/usr/lib/ladspa";
+      plugins [
+          {
+              label tap_equalizer
+              input {
+                        #1-8 are gain -50dB to +20dB, 9-16 are frequency Hz
+                        #http://tap-plugins.sourceforge.net/ladspa/eq.html
+                        controls [-50 -15 0 10 10 0 0 0 100 200 400 800 1600 3000 12000 15000]
+              }
+          }
+      ]
+  }
+
+pcm.dx_eq {
+      type ladspa
+      slave.pcm "plughw:3,0";
+      path "/usr/lib/ladspa";
+      plugins [
+          {
+              label tap_equalizer
+              input {
+                        #1-8 are gain -50dB to +20dB, 9-16 are frequency Hz 
+                        #http://tap-plugins.sourceforge.net/ladspa/eq.html
+                        controls [-50 -50 -50 0 20 20 -50 -50 100 300 500 1000 1600 2000 12000 15000]
+              }
+          }
+      ]
+  }
+
+ctl.equal {
+        type equal;
+}
+
+pcm.equalrec {
+        type plug;
+        slave {
+                pcm "plugequal";
+        }
+}
+
+pcm.plugequal {
+        type equal;
+        slave.pcm "plughw:3,0";
+}
