@@ -68,7 +68,7 @@ if [ -f /etc/bash_completion ]; then
 fi
 
 # Proxy
-export http_proxy="http://nikita.tux.lan:3128"
+export http_proxy="http://your.lan:3128"
 
 # Extracting files.
 # Usage: extract archive.extension
