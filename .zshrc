@@ -20,7 +20,7 @@ zstyle ':completion:*' completer _complete _correct _approximate expand _match _
 # End of lines configured by zsh-newuser-install
 
 # The following lines were added by compinstall
-zstyle :compinstall filename '/home/dale/.zshrc'
+zstyle :compinstall filename '~/.zshrc'
 
 autoload -Uz compinit
 compinit
